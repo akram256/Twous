@@ -9,7 +9,6 @@ ab_env/
 my_env1/
 env1/
 env/
-migrations
 .vscode
 settings.json
 # SQLite3https://bitbucket.org/tarvos_lotto/asset.based.lotto/pull-requests/25
