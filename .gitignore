@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+.mypy_cache/
+# Distribution / packaging
+.Python
+venv/
+ENV/
+ab_env/
+my_env1/
+env1/
+env/
+migrations
+.vscode
+settings.json
+# SQLite3https://bitbucket.org/tarvos_lotto/asset.based.lotto/pull-requests/25
+db.sqlite3
+# python_ dotenv
+.env
+.env_sample
+.env-local
+
+# Unit test / coverage reports
+.coverage
+.DS_Store
+
+.idea/
+media/
+#.env
