@@ -2,17 +2,18 @@ from django.urls import path,include
 from rest_framework.routers import DefaultRouter
 
 from Jobs.views import (
-                        JobCategoryView,UserJobViewSet,JobMaterialView,
+                        JobCategoryView,JobMaterialView,
                         JobMaterialRetrieveUpdateDestroy,UserJobRetrieveUpdateDestroy,
-                        UpdateJobStatus,ActivateJob
+                        UpdateJobStatus,ActivateJob,UserJobView
                         )
 
 # app_name = 'Jobs'
 router_v1= DefaultRouter()
-router_v1.register('jobs',UserJobViewSet)
+# router_v1.register('jobs',UserJobViewSet)
 
 urlpatterns = [
     path("job-categories/", JobCategoryView.as_view(), name='job-category'),
+    path('jobs/',UserJobView.as_view(),name='jobs'),
     path("job-categories/<str:id>", JobCategoryView.as_view(), name='update-and-delete-category'),
     path('', include(router_v1.urls)),
     path("job/<str:id>",UserJobRetrieveUpdateDestroy.as_view(),name='update-and-delete-user-job'),

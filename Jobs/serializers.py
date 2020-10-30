@@ -14,7 +14,8 @@ class UserJobSerilizer(serializers.ModelSerializer):
         model = UserJob
         fields = ('id','details','location',
                   'pictures','budget',
-                #   'created_by','status',
+                  'created_by'
+                #   ,'status',
                 #   'base_charge_amount'
                 #  'job_category'
                 # 'job_delivery_time',

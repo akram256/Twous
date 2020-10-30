@@ -62,12 +62,18 @@ class JobCategoryRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
 
 
 
-class UserJobViewSet(viewsets.ModelViewSet):
+class UserJobView(ListAPIView):
     serializer_class=UserJobSerilizer
     permission_classes=(IsUser,)
     queryset = UserJob.objects.all()
 
-    def create(self, request):
+    def get(self, request, *args, **kwargs):
+        jobs = self.queryset.filter(
+            created_by=request.user)
+        serializer = self.serializer_class(jobs, many=True)
+        return Response({'data':serializer.data, },status=status.HTTP_200_OK)
+
+    def post(self, request):
 
         post_data = {
                     # "title":request.data["title"],
@@ -77,6 +83,8 @@ class UserJobViewSet(viewsets.ModelViewSet):
                     # "job_delivery_time":request.data["job_delivery_time"],
                     "pictures":request.data["pictures"],
                     "location":request.data["location"],
+                    "created_by":request.user.id
+                    
 
                      }
         serializer = self.get_serializer(data=post_data)
