@@ -4,16 +4,17 @@ from Auth.models import Profile
 from Jobs.models import UserJob
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
 # Create your models here.
 class Notification(BaseAbstractModel):
-    pass
-#     title = models.CharField(max_length=200)
-#     body = models.TextField()
-#     recipients = models.ManyToManyField(to=Profile,
-#                                         related_name='notifications',
-#                                         related_query_name='notification')
-#     time_stamp = models.DateTimeField(auto_now_add=True)
-#     read = models.BooleanField(default=False)
+    # pass
+    title = models.CharField(max_length=200, null=True)
+    body = models.TextField(null=True)
+    recipients = models.ManyToManyField(to=Profile,
+                                        related_name='notifications',
+                                        related_query_name='notification')
+    time_stamp = models.DateTimeField(auto_now_add=True, null=True)
+    read = models.BooleanField(default=False)
 
 # @receiver(post_save, sender=UserJob)
 # def job_handler(sender, instance, **kwargs):

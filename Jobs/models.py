@@ -2,6 +2,7 @@ from django.db import models
 from Auth.models import User
 from helpers.models import BaseAbstractModel
 from decimal import Decimal
+from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 
@@ -38,8 +39,13 @@ class UserJob(BaseAbstractModel):
     details=models.TextField(null=True)
     location=models.CharField(max_length=255, blank=True, null=True)
     # job_delivery_time=models.DateTimeField(null=True, blank=True)
+    pictures=ArrayField(
+        ArrayField(
+            models.CharField(max_length=255, null=True),
+            size=8,
+        ))
     job_delivery_time=models.CharField(max_length=255, blank=True, null=True)
-    pictures=models.ImageField(upload_to='pictures/', null=True)
+    # pictures=models.CharField(max_length=255, blank=True, null=True) 
     budget= models.DecimalField(max_digits=12, decimal_places=2, null=True)
     job_category_id= models.ForeignKey(to='Jobs.JobCategory', on_delete=models.DO_NOTHING, null=True) 
     created_by= models.ForeignKey(to='Auth.User', on_delete=models.DO_NOTHING, null=True)

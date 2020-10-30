@@ -35,8 +35,8 @@ from Wallets.models import Wallet
 import decimal
 from helpers.validators import phonelookup
 from Auth.permissions import IsProvider, IsUser,IsProfileOwner
+from Auth.filters import ProviderFilter
 logger = logging.getLogger(__name__)
-
 
 
 class RegistrationAPIView(generics.GenericAPIView):
@@ -180,6 +180,10 @@ class LoginAPIView(APIView):
     serializer_class = LoginSerializer
 
     def post(self, request):
+        """
+        param1 -- email
+        param2 -- password
+        """ 
         serializer = self.serializer_class(data=request.data)
         phone_no = request.data.get('phone_no')
         password = request.data.get('password')
@@ -211,9 +215,9 @@ class LoginAPIView(APIView):
             resp ={
                     'status':'00',
                     'token':user.token,
-                    'user wallet accountNumber':user_wallet.wallet_accountNumber,
-                    'user wallet bankName':user_wallet.wallet_bankName,
-                    'user wallet accountName': user_wallet.wallet_accountName,
+                    'wallet_accountNumber':user_wallet.wallet_accountNumber,
+                    'wallet_bankName':user_wallet.wallet_bankName,
+                    'wallet_accountName': user_wallet.wallet_accountName,
                     'id':user.id, 
                     'first_name':user.first_name,
                     'last_name':user.last_name,
@@ -253,7 +257,18 @@ class FacebookSocialAuthView(ListCreateAPIView):
         user = request.data.get('user', {})
         serializer = serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        user_email=serializer.data['auth_token']
+        user=User.objects.filter(email=user_email)
+        # serializer.data['auth_token']=user[0].token
+        data= serializer.data
+        data["user_id"]=user[0].id
+        data["phone_no"]=user[0].phone_no
+        data["auth_token"]=user[0].token
+
+        return Response({
+            
+            'data':data,
+            'Message':'You have successfully loggedin'}, status=status.HTTP_200_OK)
 
 
 class GoogleSocialAuthView(ListCreateAPIView):
@@ -265,7 +280,19 @@ class GoogleSocialAuthView(ListCreateAPIView):
         user = request.data.get('user', {})
         serializer = serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        user_email=serializer.data['auth_token']
+        user=User.objects.filter(email=user_email)
+        # serializer.data['auth_token']=user[0].token
+        data= serializer.data
+        data["user_id"]=user[0].id
+        data["phone_no"]=user[0].phone_no
+        data["auth_token"]=user[0].token
+
+        return Response({
+            
+            'data':data,
+            'Message':'You have successfully loggedin'}, status=status.HTTP_200_OK)
+        # return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 
@@ -468,8 +495,9 @@ class ReviewView(ListCreateAPIView):
 class ListProvidersView(ListAPIView):
     permission_classes = (AllowAny,)
     serializer_class = ProfileSerializer
-   
+    filter_class = ProviderFilter
 
+   
     def get_queryset(self):
         user = Profile.objects.filter(user__role="PROVIDER")
         return user

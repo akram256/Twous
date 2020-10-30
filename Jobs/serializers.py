@@ -31,4 +31,20 @@ class UserJobSerilizer(serializers.ModelSerializer):
 class JobMaterialSerializer(serializers.ModelSerializer):
     class Meta:
         model= JobMaterial
-        fields=('job', 'name', 'price', 'picture',)
+        fields=('job', 'name', 'price', 'picture','created_at')
+
+class ActivateJob(serializers.ModelSerializer):
+    class Meta:
+        model =UserJob
+        fields=fields = ('id','details','location','is_active',
+                'budget'
+                )
+
+        extra_kwargs ={
+            'id': {
+                'read_only': True
+        },
+        'pictures':{
+            'read_only':True
+        }
+        }
