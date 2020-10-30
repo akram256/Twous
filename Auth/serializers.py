@@ -126,15 +126,17 @@ class FacebookAuthSerializer(serializers.Serializer):
         user, create = User.objects.get_or_create(**user)
         # print(new_user)
         if create:
-            user.is_active = True
-            user.socialmedia= True
-            user.phone_no=randint(100000, 20000000000)
-            user.password=randint(1000000, 20000000000)
-            user.save()
-            self.auth_token= user.token
-            self.email= user.email
-            self.phone_no= user.phone_no
-            return email
+            return "This user need to register"
+            # user.is_active = True
+            # user.socialmedia= True
+            # user.role="USER"
+            # user.phone_no=randint(100000, 20000000000)
+            # user.password=randint(1000000, 20000000000)
+            # user.save()
+            # self.auth_token= user.token
+            # self.email= user.email
+            # self.phone_no= user.phone_no
+            # return email
         if not create and user:
             auth_token= user.token
             email= user.email
@@ -164,16 +166,17 @@ class GoogleAuthSerializer(serializers.Serializer):
             'email':email }
         user, create = User.objects.get_or_create(email=user['email'])
         if create:
-            user.is_active = True
-            user.socialmedia= True
-            user.phone_no=randint(1000000, 200000000000)
-            user.password=randint(1000000, 200000000000)
-            user.first_name=user['first_name']
-            user.last_name=user['last_name']
-            user.save()
-            self.auth_token= user.token
-            self.email= user.email
-            self.phone_no= user.phone_no
+            return "This user need to register"
+            # user.is_active = True
+            # user.socialmedia= True
+            # user.phone_no=randint(1000000, 200000000000)
+            # user.password=randint(1000000, 200000000000)
+            # user.first_name=user['first_name']
+            # user.last_name=user['last_name']
+            # user.save()
+            # self.auth_token= user.token
+            # self.email= user.email
+            # self.phone_no= user.phone_no
             return email
         if not create and user:
             auth_token= user.token
