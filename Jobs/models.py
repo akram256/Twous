@@ -87,7 +87,7 @@ class Bids(BaseAbstractModel):
     """This is a model for job bids """
     
     job= models.ForeignKey(to='Jobs.UserJob', on_delete=models.DO_NOTHING, null=True)
-    # provider=models.ForeignKey(to='Auth.User', on_delete=models.DO_NOTHING, null=True)
+    provider=models.ForeignKey(to='Auth.User', on_delete=models.DO_NOTHING, null=True)
     bid_amount= models.DecimalField(max_digits=12, decimal_places=2, null=True)
     bid_status=  models.CharField(max_length=255, blank=True, null=True)
     availability_time=models.DateTimeField(null=True, blank=True)
