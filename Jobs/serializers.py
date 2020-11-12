@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Jobs.models import JobCategory, UserJob,JobMaterial
+from Jobs.models import JobCategory, UserJob,JobMaterial,Bids
 
 
 class JobCategorySerializer(serializers.ModelSerializer):
@@ -33,6 +33,11 @@ class JobMaterialSerializer(serializers.ModelSerializer):
     class Meta:
         model= JobMaterial
         fields=('job', 'name', 'price', 'picture','created_at')
+
+class JobBidSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= Bids
+        fields=('bid_amount', 'availability_time', 'base_amount_charged','job','provider','provider_name','job_name','created_at')
 
 class ActivateJob(serializers.ModelSerializer):
     class Meta:

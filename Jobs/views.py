@@ -4,8 +4,8 @@ from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser, AllowAny,IsAuthenticated
-from Jobs.models import JobCategory, UserJob, JobMaterial
-from Jobs.serializers import JobCategorySerializer,UserJobSerilizer,JobMaterialSerializer,ActivateJob
+from Jobs.models import JobCategory, UserJob, JobMaterial,Bids
+from Jobs.serializers import JobCategorySerializer,UserJobSerilizer,JobMaterialSerializer,ActivateJob,JobBidSerializer
 import secrets
 from django.conf import settings
 from Auth.models import User
@@ -259,5 +259,24 @@ class JobMaterialRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         return Response({"message": "User Job has been successfully deleted"},
                         status=status.HTTP_204_NO_CONTENT)
 
-  
-        
+
+class JobBid(ListAPIView):
+    serializer_class=JobBidSerializer
+    permission_classes=(IsProvider,)
+    queryset=Bids.objects.all()
+
+
+    def post(self, request, id=None):
+
+        provider=request.user.id
+        provider_name = request.user.first_name
+
+        post_data = {"bid_amount":request.data["bid_amount"],"job":id,
+                    "provider":provider,
+                    "availability_time":request.data["availability_time"],
+                    "base_amount_charged":request.data["base_amount_charged"]}
+        serializer = self.get_serializer(data=post_data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"data":serializer.data,"provider_name":provider_name,"message":"Job bid successfully created"},
+                        status=status.HTTP_201_CREATED)

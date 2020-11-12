@@ -4,7 +4,8 @@ from rest_framework.routers import DefaultRouter
 from Jobs.views import (
                         JobCategoryView,JobMaterialView,
                         JobMaterialRetrieveUpdateDestroy,UserJobRetrieveUpdateDestroy,
-                        UpdateJobStatus,ActivateJob,UserJobView
+                        UpdateJobStatus,ActivateJob,UserJobView,JobBid
+                        # , GetJobBid
                         )
 
 # app_name = 'Jobs'
@@ -20,5 +21,7 @@ urlpatterns = [
     path("jobmaterials",JobMaterialView.as_view(),name='add-and-get-job-material'),
     path("inactive_jobs",UpdateJobStatus.as_view(), name='inactive-jobs'),
     path("jobmaterials/<str:id>",JobMaterialRetrieveUpdateDestroy.as_view(),name='delete-and-update-job-material'),
-    path('activate_job/<str:id>', ActivateJob.as_view(), name='activate_job')
+    path('activate_job/<str:id>', ActivateJob.as_view(), name='activate_job'),
+    path("job/bid/<str:id>", JobBid.as_view(), name = 'job_bids'),
+    # path("job/bids",GetJobBid.as_view(), name="get-job-bids")
     ]
